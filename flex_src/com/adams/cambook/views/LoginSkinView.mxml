@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Skin xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		xmlns:s="library://ns.adobe.com/flex/spark" 
+		xmlns:components="com.adams.cambook.views.components.*"  >
+	 
+	<fx:Metadata>
+		[HostComponent("com.adams.cambook.views.mediators.LoginViewMediator")]
+	</fx:Metadata> 
+	 
+	<components:NativePanel width="600" title="AS3 Book"  horizontalCenter="0" verticalCenter="0"  >
+		<components:layout>
+			<s:VerticalLayout horizontalAlign="center"/>
+		</components:layout>
+		<s:Group width="100%">
+			<s:BitmapImage source="@Embed('assets/images/swizImg.jpg')"  /> 
+			<s:Form id="loginForm" verticalCenter="0" horizontalCenter="0">
+				<s:FormItem width="100%" label="email id:"  required="true">
+					<s:TextInput id="userNameTextInput" text="devaraj@wp.pl" />
+				</s:FormItem>
+				<s:FormItem width="100%" label="password:" required="true">
+					<s:TextInput id="passwordTextInput" text="tests" displayAsPassword="true" />
+				</s:FormItem>
+				<s:FormItem>
+					<s:Label bottom="10" horizontalCenter="0" id="wrongCredentials" color="red"/>
+				</s:FormItem>
+			</s:Form>
+			<s:Form id="registerForm" includeInLayout="false" visible="false" horizontalCenter="0">
+				<s:FormHeading label="Register Form"/>
+				<s:FormItem label="First Name" required="true">
+					<s:TextInput id="personFirstname"/>
+				</s:FormItem>
+				<s:FormItem label="Last Name" skinClass="assets.skins.CustomFormItem">
+					<s:TextInput id="personLastname" />
+				</s:FormItem>
+				<s:FormItem label="Email" required="true" skinClass="assets.skins.CustomFormItem">
+					<s:TextInput id="personEmail" />
+				</s:FormItem> 
+				<s:FormItem label="Twitter id" skinClass="assets.skins.CustomFormItem">
+					<s:TextInput id="tweetId"/>
+				</s:FormItem> 
+				<s:FormItem label="Twitter Password" skinClass="assets.skins.CustomFormItem">
+					<s:TextInput id="tweetPassword" displayAsPassword="true"/>
+				</s:FormItem> 
+				<s:FormItem label="Mobile" skinClass="assets.skins.CustomFormItem">
+					<s:TextInput id="personMobile"  />
+				</s:FormItem>  
+			</s:Form>
+		</s:Group>
+		<components:controlBarContent>
+			<s:HGroup horizontalAlign="center" width="100%" verticalAlign="middle">
+				<components:NativeButton id="submitBtn" label="Login"/>
+				<components:NativeButton id="newUserBtn" label="New User"/>
+				<components:NativeButton id="registerBtn" label="Register" includeInLayout="false" visible="false" enabled="true"/>
+				<components:NativeButton id="cancelBtn" label="Cancel" includeInLayout="false" visible="false" />
+			</s:HGroup>
+		</components:controlBarContent>
+	</components:NativePanel> 
+</s:Skin>

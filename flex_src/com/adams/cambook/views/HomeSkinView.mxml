@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Skin xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		xmlns:s="library://ns.adobe.com/flex/spark"  xmlns:mx="library://ns.adobe.com/flex/mx" 
+		xmlns:mediators="com.adams.cambook.views.mediators.*"
+		xmlns:components="com.adams.cambook.views.components.*" xmlns:controls="com.jabbypanda.controls.*">	
+	<fx:Metadata>
+		[HostComponent("com.adams.cambook.views.mediators.HomeViewMediator")]
+	</fx:Metadata>  
+	<fx:Script>
+		<![CDATA[
+			import mx.collections.ArrayList;
+		]]>
+	</fx:Script>
+	<s:states>
+		<s:State name="WallState" />
+		<s:State name="UpdateState" />
+		<s:State name="MsgState" />
+	</s:states> 
+	
+	<s:Rect width="100%" height="49">
+		<s:fill><s:SolidColor color="#171717"/></s:fill>
+		<s:stroke><s:SolidColorStroke color="#333333"/></s:stroke>
+		<s:filters><s:DropShadowFilter angle="90" distance="3" alpha=".3" blurX="5" blurY="5"/></s:filters>
+	</s:Rect> 
+	<s:Rect width="100%" height="49">
+		<s:fill><s:SolidColor color="#171717"/></s:fill>
+	</s:Rect>
+	<s:HGroup width="100%"   top="2" left="142" right="0" paddingBottom="3" paddingLeft="3" paddingRight="3" paddingTop="0"  
+			  verticalAlign="middle">
+			<s:VGroup>
+				<s:Label id="personName" styleName="headerStyle"/>
+				<s:Label text="[Edit]" id="profileTxt"/>		
+			</s:VGroup>
+			<s:TextArea id="updateTxt" height="40" width="100%"/>	
+			<s:VGroup height="100%" verticalAlign="middle">
+				<s:CheckBox label="tweet" id="tweet" visible="false" width="0"/>
+				<components:NativeButton label="update" id="update"/>
+			</s:VGroup>
+			<components:NativeButton id="findFriendsBtn" label="Find new friends"/>
+	</s:HGroup>
+	
+	<s:HGroup height="100%" width="100%" top="50" paddingBottom="5" paddingLeft="5" paddingRight="5" paddingTop="5" >	
+		<components:NativePanel id="profilePanel" height="100%" width="100%"  title="Profile" 
+								showCloseButton="true" includeInLayout="false" visible="false">
+				<s:Scroller width="100%" height="100%">
+					<s:VGroup width="100%" height="100%" horizontalAlign="center">
+						<s:Form id="personForm" horizontalCenter="0"> 
+							<s:FormItem label="First Name" required="true">
+								<s:Label id="personFirstname"/>
+							</s:FormItem>
+							<s:FormItem label="Last Name">
+								<s:Label id="personLastname" />
+							</s:FormItem>
+							<s:FormItem label="Email" required="true">
+								<s:Label id="personEmail" />
+							</s:FormItem>
+							<s:FormItem>
+								<components:NativeButton id="passwordBtn" label="Modify Information"/>
+							</s:FormItem>  
+						</s:Form>
+						<s:Form id="passwordForm" includeInLayout="false" visible="false">
+							<s:FormHeading label="Modify"/>
+							<s:FormItem label="Old Password" required="true">
+								<s:TextInput id="oldPersonPassword" displayAsPassword="true"/>
+							</s:FormItem>
+							<s:FormItem label="New Password" required="true">
+								<s:TextInput id="personPassword1" displayAsPassword="true"/>
+							</s:FormItem>
+							<s:FormItem label="Retype Password" required="true">
+								<s:TextInput id="personPassword2" displayAsPassword="true"/>
+							</s:FormItem>
+							<s:FormItem label="Twitter id">
+								<s:TextInput id="tweetId"/>
+							</s:FormItem> 
+							<s:FormItem label="Twitter Password">
+								<s:TextInput id="tweetPassword" displayAsPassword="true"/>
+							</s:FormItem> 
+							<s:FormItem label="Password Question">
+								<s:DropDownList id="personQuestion" width="200" />
+							</s:FormItem>
+							<s:FormItem label="Password Answer">
+								<s:TextInput id="personAnswer"/>
+							</s:FormItem>
+							<s:FormItem label="City">
+								<s:TextInput id="personCity"/>
+							</s:FormItem>
+							<s:FormItem label="Country">
+								<s:TextInput id="personCountry"/>
+							</s:FormItem>
+							<s:FormItem label="Postal Code">
+								<s:TextInput id="personPostalCode" />
+							</s:FormItem>
+							<s:FormItem>
+								<components:NativeButton id="submitBtn" label="Save" enabled="false" />
+								<components:NativeButton id="cancelBtn" label="Cancel"/>
+							</s:FormItem>
+						</s:Form> 
+						<s:Label id="friendsCount" />
+					</s:VGroup>
+				</s:Scroller>
+		</components:NativePanel>
+		<s:VGroup width="100%" height="100%" gap="0">
+			<s:TabBar id="wallTab"  dataProvider="{new ArrayList(['My Updates','Wall','Messages'])}"/>
+			<s:Scroller width="100%" height.UpdateState="100%" height.WallState="0" height.MsgState="0" visible.UpdateState="true" visible="false"  top="0"  >
+				<components:NativeDataGroup width="100%" height="100%" id="myUpdateDG"  >
+					<components:layout><s:VerticalLayout /></components:layout>
+				</components:NativeDataGroup>
+			</s:Scroller>	
+			<s:Scroller width="100%" height.WallState="100%" height.UpdateState="0" height.MsgState="0" visible.WallState="true" visible="false" top="0" >
+				<components:NativeDataGroup width="100%" height="100%" id="wallDG" >
+					<components:layout><s:VerticalLayout /></components:layout>
+				</components:NativeDataGroup>
+			</s:Scroller>
+			<s:Scroller width="100%" height.MsgState="100%" height.WallState="0" height.UpdateState="0" visible.MsgState="true" visible="false" top="0" > 
+				<components:NativeDataGroup width="100%" height="100%" id="messageDG" >
+					<components:layout><s:VerticalLayout /></components:layout>
+				</components:NativeDataGroup>
+			</s:Scroller>
+		</s:VGroup> 	 
+		
+		<s:VGroup width="100%" height="100%">
+			<components:NativePanel height="100%" width="100%"  title="Friends List" >
+				<s:Group  width="100%" height="100%">
+					<s:Scroller width="100%" top="0" bottom="122">
+							<components:NativeDataGroup width="100%" height="100%" id="friendsListDG">
+								<components:layout><s:VerticalLayout /></components:layout>
+							</components:NativeDataGroup>
+					</s:Scroller>
+				</s:Group >
+			</components:NativePanel>
+			<components:NativePanel height="120" bottom="0" width="100%" title="Suggested Friends" >
+				<s:Scroller width="100%" height="100%">
+						<components:NativeDataGroup width="100%" height="100%" id="suggestFriendsListDG">
+							<components:layout><s:VerticalLayout /></components:layout>
+						</components:NativeDataGroup>
+				</s:Scroller>	
+			</components:NativePanel>	
+		</s:VGroup>
+		<components:NativePanel height="100%" id="searchPanel" width="100%" 
+								includeInLayout="false" visible="false" title="Search" showCloseButton="true">
+			<s:HGroup width="100%" horizontalAlign="left" verticalAlign="middle">
+				<controls:InputAssist id="searchInput" width="100%"/>	
+			</s:HGroup>
+		</components:NativePanel>
+	</s:HGroup> 
+	<s:BitmapImage source="@Embed('assets/images/icons/cbLogo.png')" left="10" top="10" />
+</s:Skin>
