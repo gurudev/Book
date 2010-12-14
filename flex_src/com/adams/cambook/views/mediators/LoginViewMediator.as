@@ -1,12 +1,13 @@
 package com.adams.cambook.views.mediators
 { 
 	
-	import com.adams.cambook.dao.AbstractDAO;
-	import com.adams.cambook.dao.PagingDAO;
-	import com.adams.cambook.models.vo.*;
-	import com.adams.cambook.utils.Action;
-	import com.adams.cambook.utils.ObjectUtils;
-	import com.adams.cambook.utils.Utils;
+	import com.adams.cambook.model.AbstractDAO;
+	import com.adams.swizdao.dao.PagingDAO;
+	import com.adams.cambook.model.vo.*;
+	import com.adams.swizdao.model.vo.*;
+	import com.adams.swizdao.util.Action;
+	import com.adams.swizdao.util.ObjectUtils;
+	import com.adams.cambook.util.Utils;
 	import com.adams.cambook.views.LoginSkinView;
 	
 	import flash.events.Event;
@@ -22,6 +23,7 @@ package com.adams.cambook.views.mediators
 	
 	import spark.components.Button;
 	import spark.components.TextInput;
+	import com.adams.swizdao.views.mediators.AbstractViewMediator;
 	
 	/**
 	 * Handles all events, data manipulation, data bindings, and whatever else it's 
@@ -204,8 +206,8 @@ package com.adams.cambook.views.mediators
 			personDAO.controlService.authCS.loginAttempt.add(checkLogin);
 			personDAO.controlService.authCS.login(userName,password);
 			cursorManager.setBusyCursor();
-			currentInstance.currentPerson.personEmail= userName;
-			currentInstance.currentPerson.personPassword = password;
+			currentInstance.mapConfig.currentPerson.personEmail= userName;
+			currentInstance.mapConfig.currentPerson.personPassword = password;
 		}
 		/**
 		 * The handler to check the userlogin credentials

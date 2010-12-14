@@ -7,7 +7,7 @@
 	</fx:Metadata> 
 	<fx:Script>
 		<![CDATA[
-			import com.adams.cambook.models.vo.CurrentInstance;
+			import com.adams.swizdao.model.vo.CurrentInstance;
 			[Bindable]
 			[Inject]
 			public var currentInstance:CurrentInstance; 

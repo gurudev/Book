@@ -26,21 +26,6 @@ CREATE TABLE `connections` (
 
 /*Data for the table `connections` */
 
-/*Table structure for table `file_details` */
-
-DROP TABLE IF EXISTS `file_details`;
-
-CREATE TABLE `file_details` (
-  `File_ID` int(11) NOT NULL AUTO_INCREMENT,
-  `Filename` varchar(250) DEFAULT NULL,
-  `Filepath` varchar(250) DEFAULT NULL,
-  `Filedate` datetime DEFAULT NULL,
-  `Person_FK` int(11) DEFAULT NULL,
-  PRIMARY KEY (`File_ID`)
-) ENGINE=MyISAM AUTO_INCREMENT=264 DEFAULT CHARSET=latin1;
-
-/*Data for the table `file_details` */
-
 /*Table structure for table `notes` */
 
 DROP TABLE IF EXISTS `notes`;
@@ -61,8 +46,6 @@ CREATE TABLE `notes` (
 ) ENGINE=MyISAM AUTO_INCREMENT=112 DEFAULT CHARSET=latin1;
 
 /*Data for the table `notes` */
-
-insert  into `notes`(`Note_ID`,`Description`,`Creation_Date`,`Created_person_FK`,`File_FK`,`Note_Type`,`Person_FK`,`Note_FK`,`Note_Status_FK`) values (17,'testing Tweet from CampBook app, to be demoed at #FlashCamp','2010-12-10 17:02:54',1,NULL,0,0,NULL,0);
 
 /*Table structure for table `persons` */
 

@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <s:ItemRenderer xmlns:fx="http://ns.adobe.com/mxml/2009" 
 		 xmlns:s="library://ns.adobe.com/flex/spark"   xmlns:mx="library://ns.adobe.com/flex/mx"  width="100%"   
-		xmlns:components="com.adams.cambook.views.components.*"> 
+		xmlns:components="com.adams.swizdao.views.components.*"> 
 	<fx:Script>
 		<![CDATA[
-			import com.adams.cambook.models.vo.CurrentInstance;
-			import com.adams.cambook.models.vo.Persons;
-			import com.adams.cambook.utils.ObjectUtils;
-			import com.adams.cambook.views.RendererUtil;
-			import com.adams.cambook.views.components.NativeList;
+			import com.adams.swizdao.model.vo.CurrentInstance;
+			import com.adams.cambook.model.vo.Persons;
+			import com.adams.swizdao.util.ObjectUtils;
+			import com.adams.cambook.util.RendererUtil;
+			import com.adams.swizdao.views.components.NativeList;
 			
 			import mx.events.FlexEvent;
 			import mx.events.FlexMouseEvent;

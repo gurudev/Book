@@ -1,22 +1,24 @@
 package com.adams.cambook.views.mediators
 {
-	import com.adams.cambook.dao.AbstractDAO;
-	import com.adams.cambook.dao.PagingDAO;
-	import com.adams.cambook.models.processor.PersonProcessor;
-	import com.adams.cambook.models.vo.*;
-	import com.adams.cambook.response.SignalSequence;
-	import com.adams.cambook.utils.Action;
-	import com.adams.cambook.utils.ArrayUtil;
-	import com.adams.cambook.utils.Description;
-	import com.adams.cambook.utils.GetVOUtil;
-	import com.adams.cambook.utils.ObjectUtils;
-	import com.adams.cambook.utils.Utils;
+	import com.adams.cambook.model.AbstractDAO;
+	import com.adams.cambook.model.processor.PersonProcessor;
+	import com.adams.cambook.model.vo.*;
+	import com.adams.cambook.util.GetVOObjectUtil;
+	import com.adams.cambook.util.RendererUtil;
+	import com.adams.cambook.util.Utils;
 	import com.adams.cambook.views.HomeSkinView;
-	import com.adams.cambook.views.RendererUtil;
-	import com.adams.cambook.views.components.NativeList;
 	import com.adams.cambook.views.renderers.BuddyCard;
 	import com.adams.cambook.views.renderers.Comment;
 	import com.adams.cambook.views.renderers.UpdateCard;
+	import com.adams.swizdao.dao.PagingDAO;
+	import com.adams.swizdao.model.vo.*;
+	import com.adams.swizdao.response.SignalSequence;
+	import com.adams.swizdao.util.Action;
+	import com.adams.swizdao.util.ArrayUtil;
+	import com.adams.swizdao.util.Description;
+	import com.adams.swizdao.util.ObjectUtils;
+	import com.adams.swizdao.views.components.NativeList;
+	import com.adams.swizdao.views.mediators.AbstractViewMediator;
 	
 	import flash.events.Event;
 	import flash.events.MouseEvent;
@@ -57,9 +59,6 @@ package com.adams.cambook.views.mediators
 		public var pagingDAO:PagingDAO;
 		[Inject]
 		public var personProcess:PersonProcessor;
-		
-		[Inject("fileDAO")]
-		public var fileDAO:AbstractDAO;
 		
 		[Form(form="view.passwordForm")]
 		public var personObj:Object;
@@ -150,18 +149,18 @@ package com.adams.cambook.views.mediators
 			
 			createFormValidators();
 			
-			if(!int( currentInstance.currentPerson.personId) ) {
+			if(!int( currentInstance.mapConfig.currentPerson.personId) ) {
 				var perAllsignal:SignalVO = new SignalVO( this, personDAO, Action.SQL_FINDALL );
 				signalSeq.addSignal( perAllsignal ); 
 				
 				var persignal:SignalVO = new SignalVO( this, personDAO, Action.FINDBY_NAME );
-				persignal.name = currentInstance.currentPerson.personEmail;
+				persignal.name = currentInstance.mapConfig.currentPerson.personEmail;
 				signalSeq.addSignal( persignal ); 
 			}
 		}
 		//load all persons
 		protected function initRecords(person:Persons):void {
-			currentInstance.currentPerson.connectionArr.push(person.personId)
+			currentInstance.mapConfig.currentPerson.connectionArr.push(person.personId)
 			var persignal:SignalVO = new SignalVO( this, personDAO, Action.FINDBY_NAME );
 			persignal.description = Description.FINISHED
 			persignal.name = person.personEmail;
@@ -169,8 +168,8 @@ package com.adams.cambook.views.mediators
 		}
 		protected function setDataProviders():void {	
 			setDataProviderFilters('upd');
-			view.myUpdateDG.dataProvider = currentInstance.currentPerson.notesSet;
-			view.friendsListDG.dataProvider = currentInstance.currentPerson.connectionSet;
+			view.myUpdateDG.dataProvider = currentInstance.mapConfig.currentPerson.notesSet;
+			view.friendsListDG.dataProvider = currentInstance.mapConfig.currentPerson.connectionSet;
 			setDataProviderFilters('suggest');
 			view.suggestFriendsListDG.dataProvider = personDAO.collection.items;
 			view.wallTab.selectedIndex = 0;
@@ -197,8 +196,8 @@ package com.adams.cambook.views.mediators
 					}
 					break; 
 				case 'upd':
-					currentInstance.currentPerson.notesSet.filterFunction = updateFilter;
-					currentInstance.currentPerson.notesSet.refresh();
+					currentInstance.mapConfig.currentPerson.notesSet.filterFunction = updateFilter;
+					currentInstance.mapConfig.currentPerson.notesSet.refresh();
 					break; 
 			}
 		}
@@ -211,15 +210,15 @@ package com.adams.cambook.views.mediators
 		}
 		protected function msgFilter(obj:Object):Boolean{
 			if( Notes(obj).personFK > 0 ){
-				if ( Notes(obj).personFK == currentInstance.currentPerson.personId || (Notes(obj).createdPersonFK == currentInstance.currentPerson.personId ) ){
+				if ( Notes(obj).personFK == currentInstance.mapConfig.currentPerson.personId || (Notes(obj).createdPersonFK == currentInstance.mapConfig.currentPerson.personId ) ){
 						return true;
 				}
 			}
 			return false;
 		}
 		protected function wallFilter(obj:Object):Boolean{
-			if ( Notes(obj).createdPersonFK != currentInstance.currentPerson.personId && Notes(obj).personFK == 0){
-				for each(var person:Persons in currentInstance.currentPerson.connectionSet){
+			if ( Notes(obj).createdPersonFK != currentInstance.mapConfig.currentPerson.personId && Notes(obj).personFK == 0){
+				for each(var person:Persons in currentInstance.mapConfig.currentPerson.connectionSet){
 					if(person.personId == Notes(obj).createdPersonFK){
 						return true;
 					}
@@ -228,8 +227,8 @@ package com.adams.cambook.views.mediators
 			return false;
 		}
 		protected function suggestFilter(obj:Object):Boolean{
-			if ( currentInstance.currentPerson.connectionArr.indexOf(Persons(obj).personId)==-1){ 
-				if(Persons(obj).personId!= currentInstance.currentPerson.personId){
+			if ( currentInstance.mapConfig.currentPerson.connectionArr.indexOf(Persons(obj).personId)==-1){ 
+				if(Persons(obj).personId!= currentInstance.mapConfig.currentPerson.personId){
 					return true;
 				}
 			}
@@ -237,7 +236,7 @@ package com.adams.cambook.views.mediators
 		}
 		override protected function setRenderers():void {
 			super.setRenderers(); 
-			BuddyCard.personsArr = currentInstance.currentPerson.connectionArr;
+			BuddyCard.personsArr = currentInstance.mapConfig.currentPerson.connectionArr;
 			view.wallDG.itemRenderer = RendererUtil.getCustomRenderer(Utils.NOTEDAO);
 			view.myUpdateDG.itemRenderer = RendererUtil.getCustomRenderer(Utils.NOTEDAO);
 			view.messageDG.itemRenderer = RendererUtil.getCustomRenderer(Utils.NOTEDAO);
@@ -262,27 +261,27 @@ package com.adams.cambook.views.mediators
 		 	 	if( signal.destination == personDAO.destination ) {
 					if( signal.action == Action.FINDBY_NAME ){
 						if(signal.description!=Description.FINISHED ){
-	 						currentInstance.currentPerson =GetVOUtil.getPersonObject( currentInstance.currentPerson.personEmail, currentInstance.currentPerson.personPassword, personDAO.collection.items as ArrayCollection );
-							currentInstance.currentPerson.personAvailability = 1;
-							view.personName.text = currentInstance.currentPerson.personFirstname;
-							ObjectUtils.setUpForm(currentInstance.currentPerson,view.personForm); 
-							ObjectUtils.setUpForm(currentInstance.currentPerson,view.passwordForm); 
+	 						currentInstance.mapConfig.currentPerson =GetVOObjectUtil.getPersonObject( currentInstance.mapConfig.currentPerson.personEmail, currentInstance.mapConfig.currentPerson.personPassword, personDAO.collection.items as ArrayCollection );
+							currentInstance.mapConfig.currentPerson.personAvailability = 1;
+							view.personName.text = currentInstance.mapConfig.currentPerson.personFirstname;
+							ObjectUtils.setUpForm(currentInstance.mapConfig.currentPerson,view.personForm); 
+							ObjectUtils.setUpForm(currentInstance.mapConfig.currentPerson,view.passwordForm); 
 							
-							view.friendsCount.text ='Friends Count : '+ currentInstance.currentPerson.connectionArr.length;
-							currentInstance.currentPerson.connectionArr.push(currentInstance.currentPerson.personId);
-							if(currentInstance.currentPerson.personRelations == 0){
+							view.friendsCount.text ='Friends Count : '+ currentInstance.mapConfig.currentPerson.connectionArr.length;
+							currentInstance.mapConfig.currentPerson.connectionArr.push(currentInstance.mapConfig.currentPerson.personId);
+							if(currentInstance.mapConfig.currentPerson.personRelations == 0){
 								changeToPasswordView();
-								currentInstance.currentPerson.personRelations = 1;
+								currentInstance.mapConfig.currentPerson.personRelations = 1;
 							}
 							
-							view.wallDG.currentPersonId = currentInstance.currentPerson.personId;
-							view.myUpdateDG.currentPersonId = currentInstance.currentPerson.personId;
-							view.messageDG.currentPersonId = currentInstance.currentPerson.personId;
+							view.wallDG.currentPersonId = currentInstance.mapConfig.currentPerson.personId;
+							view.myUpdateDG.currentPersonId = currentInstance.mapConfig.currentPerson.personId;
+							view.messageDG.currentPersonId = currentInstance.mapConfig.currentPerson.personId;
 							var perAvailSignal:SignalVO = new SignalVO( this, personDAO, Action.UPDATE );
-							perAvailSignal.valueObject = currentInstance.currentPerson;
+							perAvailSignal.valueObject = currentInstance.mapConfig.currentPerson;
 							signalSeq.addSignal( perAvailSignal ); 
 							
-							var pushOnlineMessage:PushMessage = new PushMessage( Description.UPDATE, [],  currentInstance.currentPerson.personId );
+							var pushOnlineMessage:PushMessage = new PushMessage( Description.UPDATE, [],  currentInstance.mapConfig.currentPerson.personId );
 							var pushOnlineSignal:SignalVO = new SignalVO( this, personDAO, Action.PUSH_MSG, pushOnlineMessage );
 							signalSeq.addSignal( pushOnlineSignal );
 						}else{
@@ -291,18 +290,18 @@ package com.adams.cambook.views.mediators
 						setDataProviders();
 					}
 					if( signal.action == Action.SQL_FINDALL ){
-						currentInstance.currentPersonsList = obj as ArrayCollection;
-						UpdateCard.currentPersonsList = currentInstance.currentPersonsList;
-	 					Comment.currentPersonsList = currentInstance.currentPersonsList;
-						view.searchInput.dataProvider = currentInstance.currentPersonsList
+						currentInstance.mapConfig.currentPersonsList = obj as ArrayCollection;
+						UpdateCard.currentPersonsList = currentInstance.mapConfig.currentPersonsList;
+	 					Comment.currentPersonsList = currentInstance.mapConfig.currentPersonsList;
+						view.searchInput.dataProvider = currentInstance.mapConfig.currentPersonsList
 						view.searchInput.labelField = 'personFirstname'	
 					}
 				}
 				if( signal.destination == noteDAO.destination ) {
 					if( signal.action == Action.CREATE ){
 						if(Notes(obj).personFK ==0){
-							currentInstance.currentPerson.notesSet.addItem(obj);
-							view.myUpdateDG.dataProvider =	currentInstance.currentPerson.notesSet;
+							currentInstance.mapConfig.currentPerson.notesSet.addItem(obj);
+							view.myUpdateDG.dataProvider =	currentInstance.mapConfig.currentPerson.notesSet;
 							view.updateTxt.text = '';
 							if(parentUpdateNote!=null && Notes(obj).noteType != 0){
 								var updateParentNoteSignal:SignalVO = new SignalVO( this, noteDAO, Action.UPDATE );
@@ -330,7 +329,7 @@ package com.adams.cambook.views.mediators
 			currentInstance.config.statusText =''
 		}
 		protected function newTweetHandler(ev:Object):void{ 
-		/*	var pushChatMessage:PushMessage = new PushMessage( 'Chat Message', [view.personid.value],  currentInstance.currentPerson.personId );
+		/*	var pushChatMessage:PushMessage = new PushMessage( 'Chat Message', [view.personid.value],  currentInstance.mapConfig.currentPerson.personId );
 			var pushChatSignal:SignalVO = new SignalVO( this, personDAO, Action.PUSH_MSG, pushChatMessage );
 			signalSeq.addSignal( pushChatSignal );*/
 			
@@ -426,15 +425,15 @@ package com.adams.cambook.views.mediators
 		} 
 		private function addFriendsHandler(str:String,person:Persons,msgStr:String=''):void{
 			if(str == NativeList.FOLLOWPERSON){
-				currentInstance.currentPerson.connectionSet.addItem(person);
+				currentInstance.mapConfig.currentPerson.connectionSet.addItem(person);
 				var perFollowSignal:SignalVO = new SignalVO( this, personDAO, Action.UPDATE );
-				perFollowSignal.valueObject = currentInstance.currentPerson;
+				perFollowSignal.valueObject = currentInstance.mapConfig.currentPerson;
 				signalSeq.addSignal(perFollowSignal);
 				initRecords(person)
 			}else if(str == NativeList.REPLIEDUPDATE){
 				var perMsgSignal:SignalVO = new SignalVO( this, noteDAO, Action.CREATE );
 				var msg:Notes = new Notes();
-				msg.createdPersonFK = currentInstance.currentPerson.personId;
+				msg.createdPersonFK = currentInstance.mapConfig.currentPerson.personId;
 				msg.description = msgStr;
 				msg.personFK = person.personId;
 				perMsgSignal.valueObject = msg;
@@ -445,7 +444,7 @@ package com.adams.cambook.views.mediators
 		private function newUpdateHandler(event:MouseEvent=null):void{
 			var newNote:Notes = new Notes();
 			newNote.description =  view.updateTxt.text;
-			newNote.createdPersonFK = currentInstance.currentPerson.personId;
+			newNote.createdPersonFK = currentInstance.mapConfig.currentPerson.personId;
 			newNote.creationDate = new Date();
 			if(view.tweet.selected){
 				var tweetSignal:SignalVO = new SignalVO( this, pagingDAO, Action.UPDATETWEET );
@@ -468,12 +467,12 @@ package com.adams.cambook.views.mediators
  
 		protected function modifyPasswordHandler( event:MouseEvent): void {
 			var perPasswdSignal:SignalVO = new SignalVO( this, personDAO, Action.UPDATE );
-			var personVo:Persons= currentInstance.currentPerson;
+			var personVo:Persons= currentInstance.mapConfig.currentPerson;
 			personVo = ObjectUtils.getCastObject(personObj,personVo) as Persons;
 			personVo.personPassword = view.personPassword1.text;
 			perPasswdSignal.valueObject = personVo;
 			
-			if(view.personPassword1.text == view.personPassword2.text && view.oldPersonPassword.text == currentInstance.currentPerson.personPassword){
+			if(view.personPassword1.text == view.personPassword2.text && view.oldPersonPassword.text == currentInstance.mapConfig.currentPerson.personPassword){
 				signalSeq.addSignal(perPasswdSignal);
 				changeToPasswordView();
 			}else{

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <s:Skin xmlns:fx="http://ns.adobe.com/mxml/2009" 
 		xmlns:s="library://ns.adobe.com/flex/spark"  xmlns:mx="library://ns.adobe.com/flex/mx" 
-		xmlns:mediators="com.adams.cambook.views.mediators.*"
-		xmlns:components="com.adams.cambook.views.components.*" xmlns:controls="com.jabbypanda.controls.*">	
+		xmlns:mediators="com.adams.cambook.views.mediators.*" 
+		xmlns:controls="com.jabbypanda.controls.*" xmlns:components="com.adams.swizdao.views.components.*">	
 	<fx:Metadata>
 		[HostComponent("com.adams.cambook.views.mediators.HomeViewMediator")]
 	</fx:Metadata>  
