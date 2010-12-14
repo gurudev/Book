@@ -22,7 +22,10 @@ package com.adams.cambook.util
 	import com.adams.swizdao.model.vo.PushMessage;
 	import com.adams.swizdao.model.vo.SignalVO;
 	import com.adams.swizdao.response.SignalSequence;
+	import com.adams.swizdao.service.NativeConsumer;
+	import com.adams.swizdao.service.NativeProducer;
 	import com.adams.swizdao.util.Action;
+	import com.adams.swizdao.util.ArrayUtil;
 	import com.adams.swizdao.util.Description;
 	import com.adams.swizdao.util.GetVOUtil;
 	
@@ -33,8 +36,6 @@ package com.adams.cambook.util
 	
 	import org.swizframework.core.IBeanFactory;
 	import org.swizframework.core.IBeanFactoryAware;
-	import com.adams.swizdao.service.NativeConsumer;
-	import com.adams.swizdao.service.NativeProducer;
 	
 	public class NativeMessenger implements IBeanFactoryAware
 	{
@@ -150,7 +151,7 @@ package com.adams.cambook.util
 							// create chat window
 							var sentPerson:Object = new Object();
 							sentPerson.personId = personSentId;
-							sentPerson =	Utils.findObject(sentPerson,currentInstance.mapConfig.currentPersonsList,personDAO.destination) as Object;
+							sentPerson = ArrayUtil.findObject(sentPerson,currentInstance.mapConfig.currentPersonsList,personDAO.destination) as Object;
 							//Alert.show(message,sentPerson.personFirstname);
 							
 						}else if( currentInstance.mapConfig.currentPerson.personId != ( receivedSignal.description as int ) ) {

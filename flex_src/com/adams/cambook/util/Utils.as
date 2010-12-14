@@ -16,18 +16,6 @@
 package com.adams.cambook.util
 {  
 	import com.adams.cambook.model.AbstractDAO;
-	import com.adams.cambook.model.vo.*;
-	import com.adams.swizdao.views.components.RatingComponent; 
-	
-	import flash.utils.ByteArray;
-	
-	import mx.collections.ArrayCollection;
-	import mx.collections.IList;
-	import mx.collections.IViewCursor;
-	import mx.collections.Sort;
-	import mx.collections.SortField;
-	import mx.core.ClassFactory;
-	
 	public class Utils
 	{  	 
 		public static const LOGIN_INDEX:int=0; 
@@ -51,80 +39,5 @@ package com.adams.cambook.util
 		public static const NOTEDAO 	:String="noteDAO";  
 		public static const REPLY 	:String="reply";  
 		
-		public static function removeArrcItem(item:Object,arrc:ArrayCollection, sortString:String):void{
-			var returnValue:int = -1;
-			var sort:Sort = new Sort(); 
-			sort.fields = [ new SortField( sortString ) ];
-			if(arrc.sort==null) arrc.sort = sort;
-			arrc.refresh(); 
-			var cursor:IViewCursor = arrc.createCursor();
-			var found:Boolean = cursor.findAny( item );	
-			if( found ) {
-				returnValue = arrc.getItemIndex( cursor.current );
-			} 	
-			if( returnValue != -1 ) {
-				arrc.removeItemAt(returnValue);
-			}
-		} 
-		public static function findObject( item:Object, arrc:ArrayCollection, sortString:String ):Object{
-			var returnValue:int = -1;
-			var returnObject:Object = new Object();
-			var sort:Sort = new Sort(); 
-			sort.fields = [ new SortField( sortString ) ];
-			if(arrc.sort==null) arrc.sort = sort;
-			arrc.refresh(); 
-			var cursor:IViewCursor = arrc.createCursor();
-			var found:Boolean = cursor.findAny( item );	
-			if( found ) {
-				returnValue = arrc.getItemIndex( cursor.current );
-			} 	
-			if( returnValue != -1 ) { 
-				returnObject = arrc.getItemAt(returnValue);
-			}
-			return returnObject;
-		}
-		public static function addArrcStrictItem( item:Object, arrc:ArrayCollection, sortString:String, modified:Boolean =false ):void{
-			var returnValue:int = -1;
-			var sort:Sort = new Sort(); 
-			sort.fields = [ new SortField( sortString ) ];
-			if(arrc.sort==null) arrc.sort = sort;
-			arrc.refresh(); 
-			var cursor:IViewCursor = arrc.createCursor();
-			var found:Boolean = cursor.findAny( item );	
-			if( found ) {
-				returnValue = arrc.getItemIndex( cursor.current );
-			} 	
-			if( returnValue == -1 ) {
-				arrc.addItem(item);
-			}else{
-				if(modified){
-					arrc.removeItemAt(returnValue);
-					arrc.addItemAt(item, returnValue);
-				}
-			}
-		} 
-		/**
-		 * @item //The New Item to be added
-		 * @source //The  Array in which the new item is to be added
-		 * @sortString //The property of the item by which the comparison takes place
-		 * Checks wheather the item to be added already exists in the array, if so replaces it
-		 * otherwise just pushes the new object and returns the source array
-		 */
-		public static function pushNewItem( item:Object, source:Array, sortString:String ):Array {
-			var findIndex:int = -1;
-			
-			for( var i:int = 0; i < source.length; i++ ) {
-				if( source[ i ][ sortString ] == item[ sortString ] ) {
-					findIndex = i;
-					break;
-				}
-			}
-			if( findIndex != -1 ) {
-				source[ findIndex ] = item;
-			}else {
-				source.push( item );
-			}			
-			return source;
-		} 
 	}
 }

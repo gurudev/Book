@@ -7,6 +7,7 @@
 			import com.adams.cambook.model.vo.Notes;
 			import com.adams.cambook.model.vo.Persons;
 			import com.adams.cambook.util.Utils;
+			import com.adams.swizdao.util.ArrayUtil;
 			
 			import mx.collections.ArrayCollection;
 			private var note:Notes;
@@ -17,7 +18,7 @@
 					note = value as Notes;
 					var personObj:Persons = new Persons();
 					personObj.personId = note.createdPersonFK;
-					personObj = Utils.findObject(personObj,currentPersonsList,Utils.PERSONKEY) as Persons;
+					personObj = ArrayUtil.findObject(personObj,currentPersonsList,Utils.PERSONKEY) as Persons;
 					userTxt.text = personObj.personFirstname;
 					commentTxt.text = note.description;
 				}
