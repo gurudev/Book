@@ -18,8 +18,8 @@ package com.adams.cambook.util
 	import com.adams.cambook.model.AbstractDAO;
 	public class Utils
 	{  	 
-		public static const LOGIN_INDEX:int=0; 
-		public static const HOME_INDEX:int=1;  
+		public static const LOGIN_INDEX:String='login'; 
+		public static const HOME_INDEX:String='home';  
 		
 		public static const SQL_TYPE:String="type";  
 		public static const ALERTHEADER:String='CamBook';

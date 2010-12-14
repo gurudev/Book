@@ -99,8 +99,7 @@ package com.adams.cambook.views.mediators
 		override protected function init():void
 		{
 			super.init(); 
-			viewIndex = Utils.LOGIN_INDEX; 
-			
+			viewState = Utils.LOGIN_INDEX; 
 			// set the focus to the username field
 			view.userNameTextInput.setFocus();
 		}
@@ -217,7 +216,7 @@ package com.adams.cambook.views.mediators
 			if(personDAO.controlService.authCS.authenticated)
 			{ 
 				cleanup(null);
-				currentInstance.mainViewStackIndex = Utils.HOME_INDEX;
+				currentInstance.mainViewStackIndex = 1;
 				cursorManager.removeBusyCursor();
 			}else{
 				setTimeout(wrongCredentialsAlert,1500); 
@@ -296,7 +295,7 @@ package com.adams.cambook.views.mediators
 		 */
 		override protected function gcCleanup( event:Event ):void
 		{
-			if(viewIndex!= Utils.LOGIN_INDEX)cleanup(event);
+			if(viewState!= Utils.LOGIN_INDEX)cleanup(event);
 		}
 	}
 }

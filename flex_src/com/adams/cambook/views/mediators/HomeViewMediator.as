@@ -142,7 +142,7 @@ package com.adams.cambook.views.mediators
 		 */
 		override protected function init():void {
 			super.init();  
-			viewIndex = Utils.HOME_INDEX;
+			viewState = Utils.HOME_INDEX;
 			
 			view.personQuestion.dataProvider = new ArrayList(["My Favorite Movie?","My Mother's Maiden Name?","My First Vehicle?","My Favorite Color?"]);
 			view.personQuestion.selectedIndex = 0;
@@ -495,7 +495,7 @@ package com.adams.cambook.views.mediators
 		 * as removed from stage event should not be called on these system events
 		 */		
 		override protected function gcCleanup( event:Event ):void {
-			if( viewIndex != Utils.HOME_INDEX ) {
+			if( viewState != Utils.HOME_INDEX ) {
 				cleanup( event );	
 			}
 		}
