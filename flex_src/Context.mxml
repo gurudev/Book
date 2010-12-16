@@ -5,7 +5,6 @@
 		   xmlns:Swiz="org.swizframework.core.mxml.*"
 		   xmlns:dao="com.adams.swizdao.dao.*"
 		   xmlns:collections="com.adams.swizdao.model.collections.*"
-		   xmlns:service="com.adams.swizdao.service.*"
 		   xmlns:vo="com.adams.swizdao.model.vo.*"
 		   xmlns:response="com.adams.swizdao.response.*"
 		   xmlns:signals="com.adams.swizdao.signals.*" 
@@ -17,7 +16,8 @@
 		   xmlns:services="org.swizframework.utils.services.*" 
 		   xmlns:mediateview="com.briankotek.mediateview.*" 
 		   xmlns:formprocessors="com.nsdevaraj.swiz.processors.*"
-		   activate="initializeHandler(event)" xmlns:util="com.adams.cambook.util.*">
+		   activate="initializeHandler(event)" xmlns:util="com.adams.cambook.util.*" 
+		   xmlns:cambook="com.adams.cambook.*" xmlns:service="com.adams.cambook.service.*">
 	
 	<fx:Script>
 		<![CDATA[  
@@ -74,7 +74,7 @@
 			<!-- Signals End -->
 			
 			<!-- Response Begin -->
-			<response:AbstractResult/>
+			<service:ServiceResult/>
 			<response:SignalSequence/>
 			<!-- Response End --> 
 			
@@ -92,7 +92,7 @@
 			<!-- Controller Begin -->
 			<vo:CurrentInstance/> 
 			<controller:ServiceController/>
-			<controller:LoadConfigCommand />
+			<cambook:BootStrapCommand/>
 			<!-- Controller End --> 
 			
 		</swiz:BeanProvider>
